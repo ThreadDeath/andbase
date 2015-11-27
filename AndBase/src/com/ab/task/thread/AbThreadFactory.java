@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import android.os.Process;
 
-import com.ab.util.AbAppUtil;
+import com.ab.util.AppUtil;
 // TODO: Auto-generated Javadoc
 
 /**
@@ -71,7 +71,7 @@ public class AbThreadFactory {
      */
     public static Executor getExecutorService() { 
         if (mExecutorService == null) { 
-        	int numCores = AbAppUtil.getNumCores();
+        	int numCores = AppUtil.getNumCores();
         	mExecutorService
 	         = new ThreadPoolExecutor(numCores * CORE_POOL_SIZE,numCores * MAXIMUM_POOL_SIZE,numCores * KEEP_ALIVE,
                     TimeUnit.SECONDS, mPoolWorkQueue, mThreadFactory);

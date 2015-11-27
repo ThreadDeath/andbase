@@ -18,7 +18,7 @@ package com.ab.db.storage;
 
 import java.util.ArrayList;
 
-import com.ab.util.AbStrUtil;
+import com.ab.util.StrUtil;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -70,7 +70,7 @@ public class AbStorageQuery {
 	 * @return the ab storage query
 	 */
 	public AbStorageQuery equals(String paramString, Object paramObject){
-		if(!AbStrUtil.isEmpty(whereClause)){
+		if(!StrUtil.isEmpty(whereClause)){
 			whereClause += " and ";
 		}
 		whereClause += " "+(paramString+" = ? ");
@@ -86,7 +86,7 @@ public class AbStorageQuery {
 	 * @return the ab storage query
 	 */
 	public AbStorageQuery notEqual(String paramString, Object paramObject){
-		if(!AbStrUtil.isEmpty(whereClause)){
+		if(!StrUtil.isEmpty(whereClause)){
 			whereClause += " and ";
 		}
 		whereClause += " "+(paramString+" <> ? ");
@@ -102,7 +102,7 @@ public class AbStorageQuery {
 	 * @return the ab storage query
 	 */
 	public AbStorageQuery like(String paramString, Object paramObject){
-		if(!AbStrUtil.isEmpty(whereClause)){
+		if(!StrUtil.isEmpty(whereClause)){
 			whereClause += " and ";
 		}
 		whereClause += " "+(paramString+"like ? ");
@@ -118,7 +118,7 @@ public class AbStorageQuery {
 	 * @return the ab storage query
 	 */
 	public AbStorageQuery greaterThan(String paramString, Object paramObject){
-		if(!AbStrUtil.isEmpty(whereClause)){
+		if(!StrUtil.isEmpty(whereClause)){
 			whereClause += " and ";
 		}
 		whereClause += " "+(paramString+" > ? ");
@@ -134,7 +134,7 @@ public class AbStorageQuery {
 	 * @return the ab storage query
 	 */
 	public AbStorageQuery lessThan(String paramString, Object paramObject){
-		if(!AbStrUtil.isEmpty(whereClause)){
+		if(!StrUtil.isEmpty(whereClause)){
 			whereClause += " and ";
 		}
 		whereClause += " "+(paramString+" < ? ");
@@ -150,7 +150,7 @@ public class AbStorageQuery {
 	 * @return the ab storage query
 	 */
 	public AbStorageQuery greaterThanEqualTo(String paramString, Object paramObject){
-		if(!AbStrUtil.isEmpty(whereClause)){
+		if(!StrUtil.isEmpty(whereClause)){
 			whereClause += " and ";
 		}
 		whereClause += " "+(paramString+" >= ? ");
@@ -166,7 +166,7 @@ public class AbStorageQuery {
 	 * @return the ab storage query
 	 */
 	public AbStorageQuery lessThanEqualTo(String paramString, Object paramObject){
-		if(!AbStrUtil.isEmpty(whereClause)){
+		if(!StrUtil.isEmpty(whereClause)){
 			whereClause += " and ";
 		}
 		whereClause += " "+(paramString+" <= ? ");
@@ -182,7 +182,7 @@ public class AbStorageQuery {
 	 * @return the ab storage query
 	 */
 	public AbStorageQuery in(String paramString, Object[] paramArrayOfObject){
-		if(!AbStrUtil.isEmpty(whereClause)){
+		if(!StrUtil.isEmpty(whereClause)){
 			whereClause += " and ";
 		}
 		if(paramArrayOfObject!=null && paramArrayOfObject.length>0){
@@ -304,7 +304,7 @@ public class AbStorageQuery {
 	 * @return the ab storage query
 	 */
 	public AbStorageQuery addSort(String paramString, SortOrder paramSortOrder){
-	    if(AbStrUtil.isEmpty(orderBy)){
+	    if(StrUtil.isEmpty(orderBy)){
 	    	orderBy = " " + paramString + " " + paramSortOrder;
 	    }else{
 	    	orderBy += " , " + paramString + " " + paramSortOrder;
@@ -424,7 +424,7 @@ public class AbStorageQuery {
 	 */
 	public static void printLog(AbStorageQuery mAbStorageQuery){
 		System.out.println("where "+mAbStorageQuery.getWhereClause());
-		if(!AbStrUtil.isEmpty(mAbStorageQuery.getOrderBy())){
+		if(!StrUtil.isEmpty(mAbStorageQuery.getOrderBy())){
 			System.out.println("order by "+mAbStorageQuery.getOrderBy());
 		}
 		

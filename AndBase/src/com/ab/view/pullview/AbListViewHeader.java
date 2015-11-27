@@ -31,9 +31,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.ab.util.AbDateUtil;
-import com.ab.util.AbFileUtil;
-import com.ab.util.AbViewUtil;
+import com.ab.util.DateUtil;
+import com.ab.util.FileUtil;
+import com.ab.util.ViewUtil;
 
 // TODO: Auto-generated Javadoc
 
@@ -131,13 +131,13 @@ public class AbListViewHeader extends LinearLayout {
 		headerView.setOrientation(LinearLayout.HORIZONTAL);
 		headerView.setGravity(Gravity.CENTER); 
 		
-		AbViewUtil.setPadding(headerView, 0, 10, 0, 10);
+		ViewUtil.setPadding(headerView, 0, 10, 0, 10);
 		
 		//显示箭头与进度
 		FrameLayout headImage =  new FrameLayout(context);
 		arrowImageView = new ImageView(context);
 		//从包里获取的箭头图片
-		arrowImage = AbFileUtil.getBitmapFromSrc("image/arrow.png");
+		arrowImage = FileUtil.getBitmapFromSrc("image/arrow.png");
 		arrowImageView.setImageBitmap(arrowImage);
 		
 		//style="?android:attr/progressBarStyleSmall" 默认的样式
@@ -146,8 +146,8 @@ public class AbListViewHeader extends LinearLayout {
 		
 		LinearLayout.LayoutParams layoutParamsWW = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		layoutParamsWW.gravity = Gravity.CENTER;
-		layoutParamsWW.width = AbViewUtil.scaleValue(mContext, 50);
-		layoutParamsWW.height = AbViewUtil.scaleValue(mContext, 50);
+		layoutParamsWW.width = ViewUtil.scaleValue(mContext, 50);
+		layoutParamsWW.height = ViewUtil.scaleValue(mContext, 50);
 		headImage.addView(arrowImageView,layoutParamsWW);
 		headImage.addView(headerProgressBar,layoutParamsWW);
 		
@@ -157,18 +157,18 @@ public class AbListViewHeader extends LinearLayout {
 		headerTimeView = new TextView(context);
 		headTextLayout.setOrientation(LinearLayout.VERTICAL);
 		headTextLayout.setGravity(Gravity.CENTER_VERTICAL);
-		AbViewUtil.setPadding(headTextLayout,0, 0, 0, 0);
+		ViewUtil.setPadding(headTextLayout,0, 0, 0, 0);
 		LinearLayout.LayoutParams layoutParamsWW2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		headTextLayout.addView(tipsTextview,layoutParamsWW2);
 		headTextLayout.addView(headerTimeView,layoutParamsWW2);
 		tipsTextview.setTextColor(Color.rgb(107, 107, 107));
 		headerTimeView.setTextColor(Color.rgb(107, 107, 107));
-		AbViewUtil.setTextSize(tipsTextview,30);
-		AbViewUtil.setTextSize(headerTimeView,27);
+		ViewUtil.setTextSize(tipsTextview,30);
+		ViewUtil.setTextSize(headerTimeView,27);
 		
 		LinearLayout.LayoutParams layoutParamsWW3 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		layoutParamsWW3.gravity = Gravity.CENTER;
-		layoutParamsWW3.rightMargin = AbViewUtil.scaleValue(mContext, 10);
+		layoutParamsWW3.rightMargin = ViewUtil.scaleValue(mContext, 10);
 		
 		LinearLayout headerLayout = new LinearLayout(context);
 		headerLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -184,7 +184,7 @@ public class AbListViewHeader extends LinearLayout {
 		
 		this.addView(headerView,lp);
 		//获取View的高度
-		AbViewUtil.measureView(this);
+		ViewUtil.measureView(this);
 		headerHeight = this.getMeasuredHeight();
 		
 		mRotateUpAnim = new RotateAnimation(0.0f, -180.0f,
@@ -229,7 +229,7 @@ public class AbListViewHeader extends LinearLayout {
 				tipsTextview.setText("下拉刷新");
 				
 				if(lastRefreshTime==null){
-					lastRefreshTime = AbDateUtil.getCurrentDate(AbDateUtil.dateFormatHMS);
+					lastRefreshTime = DateUtil.getCurrentDate(DateUtil.dateFormatHMS);
 					headerTimeView.setText("刷新时间：" + lastRefreshTime);
 				}else{
 					headerTimeView.setText("上次刷新时间：" + lastRefreshTime);
@@ -242,7 +242,7 @@ public class AbListViewHeader extends LinearLayout {
 					arrowImageView.startAnimation(mRotateUpAnim);
 					tipsTextview.setText("松开刷新");
 					headerTimeView.setText("上次刷新时间：" + lastRefreshTime);
-					lastRefreshTime = AbDateUtil.getCurrentDate(AbDateUtil.dateFormatHMS);
+					lastRefreshTime = DateUtil.getCurrentDate(DateUtil.dateFormatHMS);
 					
 				}
 				break;

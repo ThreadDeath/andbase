@@ -22,10 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.ab.util.AbImageUtil;
-import com.ab.util.AbLogUtil;
-import com.ab.util.AbStrUtil;
-import com.ab.util.AbStreamUtil;
+import com.ab.util.ImageUtil;
+import com.ab.util.LogUtil;
+import com.ab.util.StrUtil;
+import com.ab.util.StreamUtil;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -56,14 +56,14 @@ public class AbCacheUtil {
 			con.setDoInput(true);
 			con.connect();
 			is = con.getInputStream();
-			byte [] data = AbStreamUtil.stream2bytes(is);
+			byte [] data = StreamUtil.stream2bytes(is);
 			Map<String, List<String>> headers = con.getHeaderFields();
 			Map<String,String> mapHeaders = new HashMap<String,String>();
 			for (Map.Entry<String, List<String>> entry : headers.entrySet()) { 
 				
 				String key = entry.getKey();
 				List<String> values = entry.getValue();
-				if(AbStrUtil.isEmpty(key)){
+				if(StrUtil.isEmpty(key)){
 					key = "andbase";
 				}
 				mapHeaders.put(key, values.get(0));
@@ -87,7 +87,7 @@ public class AbCacheUtil {
 			
 		} catch (Exception e) {
 			//e.printStackTrace();
-			AbLogUtil.d(AbImageUtil.class, "" + e.getMessage());
+			LogUtil.d(ImageUtil.class, "" + e.getMessage());
 		} finally {
 			try {
 				if (is != null) {

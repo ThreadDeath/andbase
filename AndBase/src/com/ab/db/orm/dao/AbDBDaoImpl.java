@@ -39,8 +39,8 @@ import com.ab.db.orm.annotation.Id;
 import com.ab.db.orm.annotation.Relations;
 import com.ab.db.orm.annotation.RelationsType;
 import com.ab.db.orm.annotation.Table;
-import com.ab.util.AbLogUtil;
-import com.ab.util.AbStrUtil;
+import com.ab.util.LogUtil;
+import com.ab.util.StrUtil;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -122,7 +122,7 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 			}
 		}
 
-		AbLogUtil.d(AbDBDaoImpl.class, "clazz:" + this.clazz + " tableName:" + this.tableName
+		LogUtil.d(AbDBDaoImpl.class, "clazz:" + this.clazz + " tableName:" + this.tableName
 				+ " idColumn:" + this.idColumn);
 	}
 
@@ -160,7 +160,7 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 		synchronized (lock) {
 			String selection = this.idColumn + " = ?";
 			String[] selectionArgs = { Integer.toString(id) };
-			AbLogUtil.d(AbDBDaoImpl.class, "[queryOne]: select * from " + this.tableName + " where "
+			LogUtil.d(AbDBDaoImpl.class, "[queryOne]: select * from " + this.tableName + " where "
 					+ this.idColumn + " = '" + id + "'");
 			List<T> list = queryList(null, selection, selectionArgs, null, null, null,
 					null);
@@ -188,11 +188,11 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 		try {
 			lock.lock();
 			checkDBOpened();
-			AbLogUtil.d(AbDBDaoImpl.class, "[rawQuery]: " + getLogSql(sql, selectionArgs));
+			LogUtil.d(AbDBDaoImpl.class, "[rawQuery]: " + getLogSql(sql, selectionArgs));
 			cursor = db.rawQuery(sql, selectionArgs);
 			getListFromCursor(clazz,list, cursor);
 		} catch (Exception e) {
-			AbLogUtil.e(AbDBDaoImpl.class, "[rawQuery] from DB Exception.");
+			LogUtil.e(AbDBDaoImpl.class, "[rawQuery] from DB Exception.");
 			e.printStackTrace();
 		} finally {
 			closeCursor(cursor);
@@ -216,13 +216,13 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 		try {
 			lock.lock();
 			checkDBOpened();
-			AbLogUtil.d(AbDBDaoImpl.class, "[isExist]: " + getLogSql(sql, selectionArgs));
+			LogUtil.d(AbDBDaoImpl.class, "[isExist]: " + getLogSql(sql, selectionArgs));
 			cursor = db.rawQuery(sql, selectionArgs);
 			if (cursor.getCount() > 0) {
 				return true;
 			}
 		} catch (Exception e) {
-			AbLogUtil.e(AbDBDaoImpl.class, "[isExist] from DB Exception.");
+			LogUtil.e(AbDBDaoImpl.class, "[isExist] from DB Exception.");
 			e.printStackTrace();
 		} finally {
 			closeCursor(cursor);
@@ -265,7 +265,7 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 			try {
 				lock.lock();
 				checkDBOpened();
-				AbLogUtil.d(AbDBDaoImpl.class, "[queryList] from "+this.tableName+" where "+selection+"("+selectionArgs+")"+" group by "+groupBy+" having "+having+" order by "+orderBy+" limit "+limit);
+				LogUtil.d(AbDBDaoImpl.class, "[queryList] from "+this.tableName+" where "+selection+"("+selectionArgs+")"+" group by "+groupBy+" having "+having+" order by "+orderBy+" limit "+limit);
 				cursor = db.query(this.tableName, columns, selection,
 						selectionArgs, groupBy, having, orderBy, limit);
 	
@@ -359,7 +359,7 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 								}
 								
 								if(listEntityClazz==null){
-									AbLogUtil.e(AbDBDaoImpl.class, "对象模型需要设置List的泛型");
+									LogUtil.e(AbDBDaoImpl.class, "对象模型需要设置List的泛型");
 									return null;
 								}
 								
@@ -405,7 +405,7 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 				}
 				
 			} catch (Exception e) {
-				AbLogUtil.e(AbDBDaoImpl.class, "[queryList] from DB Exception");
+				LogUtil.e(AbDBDaoImpl.class, "[queryList] from DB Exception");
 				e.printStackTrace();
 			} finally {
 				closeCursor(cursor);
@@ -538,7 +538,7 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 					// id需指定
 					sql = setContentValues(entity, cv, TYPE_NOT_INCREMENT,METHOD_INSERT);
 				}
-				AbLogUtil.d(AbDBDaoImpl.class, "[insert]: insert into " + this.tableName + " " + sql);
+				LogUtil.d(AbDBDaoImpl.class, "[insert]: insert into " + this.tableName + " " + sql);
 				rowId = db.insert(this.tableName, null, cv);
 				
 				//获取关联域的操作类型和关系类型
@@ -584,7 +584,7 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 								relationsTableName = table.name();
 							}
 							
-							AbLogUtil.d(AbDBDaoImpl.class, "[insert]: insert into " + relationsTableName + " " + sql);
+							LogUtil.d(AbDBDaoImpl.class, "[insert]: insert into " + relationsTableName + " " + sql);
 							db.insert(relationsTableName, null, relationsCv);
 						}
 						
@@ -609,7 +609,7 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 									relationsTableName = table.name();
 								}
 								
-								AbLogUtil.d(AbDBDaoImpl.class, "[insert]: insert into " + relationsTableName + " " + sql);
+								LogUtil.d(AbDBDaoImpl.class, "[insert]: insert into " + relationsTableName + " " + sql);
 								db.insert(relationsTableName, null, relationsCv);
 							}
 						}
@@ -618,7 +618,7 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 				}
 				
 			} catch (Exception e) {
-				AbLogUtil.d(AbDBDaoImpl.class, "[insert] into DB Exception.");
+				LogUtil.d(AbDBDaoImpl.class, "[insert] into DB Exception.");
 				e.printStackTrace();
 			}finally {
 				lock.unlock();
@@ -668,7 +668,7 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 						sql = setContentValues(entity, cv, TYPE_NOT_INCREMENT,METHOD_INSERT);
 					}
 					
-					AbLogUtil.d(AbDBDaoImpl.class, "[insertList]: insert into " + this.tableName + " " + sql);
+					LogUtil.d(AbDBDaoImpl.class, "[insertList]: insert into " + this.tableName + " " + sql);
 					rowIds[i] = db.insert(this.tableName, null, cv);
 					
 					
@@ -722,7 +722,7 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 								relationsTableName = table.name();
 							}
 							
-							AbLogUtil.d(AbDBDaoImpl.class, "[insertList]: insert into " + relationsTableName + " " + sql);
+							LogUtil.d(AbDBDaoImpl.class, "[insertList]: insert into " + relationsTableName + " " + sql);
 							db.insert(relationsTableName, null, relationsCv);
 						}
 						
@@ -746,7 +746,7 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 									relationsTableName = table.name();
 								}
 								
-								AbLogUtil.d(AbDBDaoImpl.class, "[insertList]: insert into " + relationsTableName + " " + sql);
+								LogUtil.d(AbDBDaoImpl.class, "[insertList]: insert into " + relationsTableName + " " + sql);
 							    db.insert(relationsTableName, null, relationsCv);
 							}
 						}
@@ -754,7 +754,7 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 					}
 				}
 			} catch (Exception e) {
-				AbLogUtil.d(AbDBDaoImpl.class, "[insertList] into DB Exception.");
+				LogUtil.d(AbDBDaoImpl.class, "[insertList] into DB Exception.");
 				e.printStackTrace();
 			} finally {
 				lock.unlock();
@@ -780,11 +780,11 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 			checkDBOpened();
 			String where = this.idColumn + " = ?";
 		    String[] whereValue = { Integer.toString(id) };
-			AbLogUtil.d(AbDBDaoImpl.class, "[delete]: delelte from " + this.tableName + " where "
+			LogUtil.d(AbDBDaoImpl.class, "[delete]: delelte from " + this.tableName + " where "
 					+ where.replace("?", String.valueOf(id)));
 			rows =  db.delete(this.tableName, where, whereValue);
 		} catch (Exception e) {
-			AbLogUtil.d(AbDBDaoImpl.class, "[delete] DB Exception.");
+			LogUtil.d(AbDBDaoImpl.class, "[delete] DB Exception.");
 			e.printStackTrace();
 		}finally{
 			lock.unlock();
@@ -826,13 +826,13 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 			lock.lock();
 			checkDBOpened();
 			String mLogSql = getLogSql(whereClause,whereArgs);
-			if(!AbStrUtil.isEmpty(mLogSql)){
+			if(!StrUtil.isEmpty(mLogSql)){
 				mLogSql +=" where ";
 			}
-			AbLogUtil.d(AbDBDaoImpl.class, "[delete]: delete from " + this.tableName + mLogSql);
+			LogUtil.d(AbDBDaoImpl.class, "[delete]: delete from " + this.tableName + mLogSql);
 		    rows = db.delete(this.tableName, whereClause, whereArgs);
 		} catch (Exception e) {
-			AbLogUtil.d(AbDBDaoImpl.class, "[delete] DB Exception.");
+			LogUtil.d(AbDBDaoImpl.class, "[delete] DB Exception.");
 			e.printStackTrace();
 		}finally{
 			lock.unlock();
@@ -852,10 +852,10 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 		try {
 			lock.lock();
 			checkDBOpened();
-			AbLogUtil.d(AbDBDaoImpl.class, "[delete]: delete from " + this.tableName );
+			LogUtil.d(AbDBDaoImpl.class, "[delete]: delete from " + this.tableName );
 			rows = db.delete(this.tableName,null,null);
 		} catch (Exception e) {
-			AbLogUtil.d(AbDBDaoImpl.class, "[delete] DB Exception.");
+			LogUtil.d(AbDBDaoImpl.class, "[delete] DB Exception.");
 			e.printStackTrace();
 		}finally{
 			lock.unlock();
@@ -885,13 +885,13 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 			//set sql中不能包含主键列
 			cv.remove(this.idColumn);
 			
-			AbLogUtil.d(AbDBDaoImpl.class, "[update]: update " + this.tableName + " set " + sql
+			LogUtil.d(AbDBDaoImpl.class, "[update]: update " + this.tableName + " set " + sql
 					+ " where " + where.replace("?", String.valueOf(id)));
 
 			String[] whereValue = { Integer.toString(id) };
 			rows = db.update(this.tableName, cv, where, whereValue);
 		} catch (Exception e) {
-			AbLogUtil.d(AbDBDaoImpl.class, "[update] DB Exception.");
+			LogUtil.d(AbDBDaoImpl.class, "[update] DB Exception.");
 			e.printStackTrace();
 		} finally {
 			lock.unlock();
@@ -924,14 +924,14 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 					int id = Integer.parseInt(cv.get(this.idColumn).toString());
 					cv.remove(this.idColumn);
 	
-					AbLogUtil.d(AbDBDaoImpl.class, "[update]: update " + this.tableName + " set " + sql
+					LogUtil.d(AbDBDaoImpl.class, "[update]: update " + this.tableName + " set " + sql
 							+ " where " + where.replace("?", String.valueOf(id)));
 	
 					String[] whereValue = { Integer.toString(id) };
 					rows += db.update(this.tableName, cv, where, whereValue);
 				}
 			} catch (Exception e) {
-				AbLogUtil.d(AbDBDaoImpl.class, "[update] DB Exception.");
+				LogUtil.d(AbDBDaoImpl.class, "[update] DB Exception.");
 				e.printStackTrace();
 			} finally {
 				lock.unlock();
@@ -1013,7 +1013,7 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 		try {
 			lock.lock();
 			checkDBOpened();
-			AbLogUtil.d(AbDBDaoImpl.class, "[queryMapList]: " + getLogSql(sql, selectionArgs));
+			LogUtil.d(AbDBDaoImpl.class, "[queryMapList]: " + getLogSql(sql, selectionArgs));
 			cursor = db.rawQuery(sql, selectionArgs);
 			while (cursor.moveToNext()) {
 				Map<String, String> map = new HashMap<String, String>();
@@ -1028,7 +1028,7 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 				retList.add(map);
 			}
 		} catch (Exception e) {
-			AbLogUtil.e(AbDBDaoImpl.class, "[queryMapList] from DB exception");
+			LogUtil.e(AbDBDaoImpl.class, "[queryMapList] from DB exception");
 			e.printStackTrace();
 		} finally {
 			closeCursor(cursor);
@@ -1053,13 +1053,13 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
        try{
     	   lock.lock();
     	   checkDBOpened();
-    	   AbLogUtil.d(AbDBDaoImpl.class, "[queryCount]: " + getLogSql(sql, selectionArgs));
+    	   LogUtil.d(AbDBDaoImpl.class, "[queryCount]: " + getLogSql(sql, selectionArgs));
            cursor = db.query(this.tableName, null, sql, selectionArgs, null, null,null);
            if(cursor != null){
         	   count = cursor.getCount();
            }
        }catch (Exception e){
-    	   AbLogUtil.e(AbDBDaoImpl.class, "[queryCount] from DB exception");
+    	   LogUtil.e(AbDBDaoImpl.class, "[queryCount] from DB exception");
            e.printStackTrace();
        }finally{
     	   closeCursor(cursor);
@@ -1080,14 +1080,14 @@ public class AbDBDaoImpl<T> extends AbBasicDBDao implements AbDBDao<T> {
 		try {
 			lock.lock();
 			checkDBOpened();
-			AbLogUtil.d(AbDBDaoImpl.class, "[execSql]: " + getLogSql(sql, selectionArgs));
+			LogUtil.d(AbDBDaoImpl.class, "[execSql]: " + getLogSql(sql, selectionArgs));
 			if (selectionArgs == null) {
 				db.execSQL(sql);
 			} else {
 				db.execSQL(sql, selectionArgs);
 			}
 		} catch (Exception e) {
-			AbLogUtil.e(AbDBDaoImpl.class, "[execSql] DB exception.");
+			LogUtil.e(AbDBDaoImpl.class, "[execSql] DB exception.");
 			e.printStackTrace();
 		} finally {
 			lock.unlock();

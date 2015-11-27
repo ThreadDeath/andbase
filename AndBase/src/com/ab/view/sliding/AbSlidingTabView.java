@@ -35,7 +35,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.ab.adapter.AbFragmentPagerAdapter;
-import com.ab.util.AbLogUtil;
+import com.ab.util.LogUtil;
 import com.ab.view.sample.AbViewPager;
 
 // TODO: Auto-generated Javadoc
@@ -152,7 +152,7 @@ public class AbSlidingTabView extends LinearLayout {
         this.context = fragment.getActivity();
         initView();
   		if(VERSION.SDK_INT <= 17){	
-  			AbLogUtil.e(AbSlidingTabView.class, "AbSlidingTabView(Fragment fragment) 要求最低SDK版本17");
+  			LogUtil.e(AbSlidingTabView.class, "AbSlidingTabView(Fragment fragment) 要求最低SDK版本17");
   		    return;
   		}
   		FragmentManager mFragmentManager = fragment.getChildFragmentManager();
@@ -198,7 +198,7 @@ public class AbSlidingTabView extends LinearLayout {
    		
    	    //要求必须是FragmentActivity的实例
  		if(!(this.context instanceof FragmentActivity)){
- 			AbLogUtil.e(AbSlidingTabView.class, "构造AbSlidingTabView的参数context,必须是FragmentActivity的实例。");
+ 			LogUtil.e(AbSlidingTabView.class, "构造AbSlidingTabView的参数context,必须是FragmentActivity的实例。");
  		}
     }
     

@@ -22,7 +22,7 @@ import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ab.util.AbViewUtil;
+import com.ab.util.ViewUtil;
 // TODO: Auto-generated Javadoc
 
 /**
@@ -118,7 +118,7 @@ public class AbTabItemView extends LinearLayout {
      * @param tabTextSize the new tab text size
      */
 	public void setTabTextSize(int tabTextSize) {
-		AbViewUtil.setTextSize(mTextView, tabTextSize);
+		ViewUtil.setTextSize(mTextView, tabTextSize);
 	}
 
 	/**
@@ -168,10 +168,10 @@ public class AbTabItemView extends LinearLayout {
 	 * @param bottom the bottom
 	 */
 	public void setTabCompoundDrawablesBounds(int left, int top, int right, int bottom) {
-		leftBounds = AbViewUtil.scaleValue(mContext, left);
-		topBounds = AbViewUtil.scaleValue(mContext, top);
-		rightBounds = AbViewUtil.scaleValue(mContext, right);
-		bottomBounds = AbViewUtil.scaleValue(mContext, bottom);
+		leftBounds = ViewUtil.scaleValue(mContext, left);
+		topBounds = ViewUtil.scaleValue(mContext, top);
+		rightBounds = ViewUtil.scaleValue(mContext, right);
+		bottomBounds = ViewUtil.scaleValue(mContext, bottom);
 	}
 	
 	/**

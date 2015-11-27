@@ -52,8 +52,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.ab.adapter.AbFragmentPagerAdapter;
-import com.ab.util.AbAppUtil;
-import com.ab.util.AbLogUtil;
+import com.ab.util.AppUtil;
+import com.ab.util.LogUtil;
 import com.ab.view.sample.AbViewPager;
   
 // TODO: Auto-generated Javadoc
@@ -174,10 +174,10 @@ public class AbBottomTabView extends LinearLayout {
   		tabItemDrawableList = new ArrayList<Drawable>();
 		//要求必须是FragmentActivity的实例
 		if(!(this.context instanceof FragmentActivity)){
-			AbLogUtil.e(AbBottomTabView.class, "构造AbSlidingTabView的参数context,必须是FragmentActivity的实例。");
+			LogUtil.e(AbBottomTabView.class, "构造AbSlidingTabView的参数context,必须是FragmentActivity的实例。");
 		}
 		
-		DisplayMetrics mDisplayMetrics = AbAppUtil.getDisplayMetrics(context);
+		DisplayMetrics mDisplayMetrics = AppUtil.getDisplayMetrics(context);
 		mWidth = mDisplayMetrics.widthPixels;
 		
 		FragmentManager mFragmentManager = ((FragmentActivity)this.context).getFragmentManager();

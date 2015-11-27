@@ -36,11 +36,11 @@ import com.ab.global.AbAppConfig;
 import com.ab.task.AbTaskItem;
 import com.ab.task.AbTaskObjectListener;
 import com.ab.task.thread.AbTaskQueue;
-import com.ab.util.AbAppUtil;
-import com.ab.util.AbFileUtil;
-import com.ab.util.AbImageUtil;
-import com.ab.util.AbLogUtil;
-import com.ab.util.AbStrUtil;
+import com.ab.util.AppUtil;
+import com.ab.util.FileUtil;
+import com.ab.util.ImageUtil;
+import com.ab.util.LogUtil;
+import com.ab.util.StrUtil;
 
 // TODO: Auto-generated Javadoc
 
@@ -82,12 +82,12 @@ public class AbImageLoader {
     	this.context = context;
     	this.cacheMaxAge = AbAppConfig.DISK_CACHE_EXPIRES_TIME;
     	this.taskQueueList = new ArrayList<AbTaskQueue>();
-    	PackageInfo info = AbAppUtil.getPackageInfo(context);
+    	PackageInfo info = AppUtil.getPackageInfo(context);
     	File cacheDir = null;
-    	if(!AbFileUtil.isCanUseSD()){
+    	if(!FileUtil.isCanUseSD()){
     		cacheDir = new File(context.getCacheDir(), info.packageName);
 		}else{
-			cacheDir = new File(AbFileUtil.getCacheDownloadDir(context));
+			cacheDir = new File(FileUtil.getCacheDownloadDir(context));
 		}
     	this.diskCache = new AbDiskBaseCache(cacheDir);
     	this.memCache = AbImageBaseCache.getInstance();
@@ -225,7 +225,7 @@ public class AbImageLoader {
      */
     public void download(final ImageView imageView,final String url,final int desiredWidth,final int desiredHeight,final OnImageListener onImageListener) { 
     	
-		if(AbStrUtil.isEmpty(url)){
+		if(StrUtil.isEmpty(url)){
 			if(onImageListener!=null){
 				onImageListener.onEmpty(imageView);
 			}
@@ -235,7 +235,7 @@ public class AbImageLoader {
     	final String cacheKey = memCache.getCacheKey(url, desiredWidth, desiredHeight);
     	//先看内存
     	Bitmap bitmap = memCache.getBitmap(cacheKey);
-    	AbLogUtil.i(AbImageLoader.class, "从LRUCache中获取到的图片"+cacheKey+":"+bitmap);
+    	LogUtil.i(AbImageLoader.class, "从LRUCache中获取到的图片"+cacheKey+":"+bitmap);
     	
     	if(bitmap != null){
     		if(onImageListener!=null){
@@ -276,7 +276,7 @@ public class AbImageLoader {
                         		onImageListener.onSuccess(imageView, bitmap);
                         	}
                     	}
-                		AbLogUtil.d(AbImageLoader.class, "获取到图片："+bitmap);
+                		LogUtil.d(AbImageLoader.class, "获取到图片："+bitmap);
                 	}
                 	
                 }
@@ -303,7 +303,7 @@ public class AbImageLoader {
      */
     public void download(final String url,final int desiredWidth,final int desiredHeight,final OnImageListener2 onImageListener) { 
     	
-		if(AbStrUtil.isEmpty(url)){
+		if(StrUtil.isEmpty(url)){
 			if(onImageListener!=null){
 				onImageListener.onEmpty();
 			}
@@ -313,7 +313,7 @@ public class AbImageLoader {
     	final String cacheKey = memCache.getCacheKey(url, desiredWidth, desiredHeight);
     	//先看内存
     	Bitmap bitmap = memCache.getBitmap(cacheKey);
-    	AbLogUtil.i(AbImageLoader.class, "从LRUCache中获取到的图片"+cacheKey+":"+bitmap);
+    	LogUtil.i(AbImageLoader.class, "从LRUCache中获取到的图片"+cacheKey+":"+bitmap);
     	
     	if(bitmap != null){
     		if(onImageListener!=null){
@@ -348,7 +348,7 @@ public class AbImageLoader {
                         		onImageListener.onSuccess(bitmap);
                         	}
                     	}
-                		AbLogUtil.d(AbImageLoader.class, "获取到图片："+bitmap);
+                		LogUtil.d(AbImageLoader.class, "获取到图片："+bitmap);
                 	}
                 	
                 }
@@ -387,26 +387,26 @@ public class AbImageLoader {
 			Entry entry = diskCache.get(cacheKey);
 			if(entry == null || entry.isExpired()){
 				if(entry == null){
-					AbLogUtil.i(AbImageLoader.class, "磁盘中没有这个图片");
+					LogUtil.i(AbImageLoader.class, "磁盘中没有这个图片");
 				}else{
 					if(entry.isExpired()){
-						AbLogUtil.i(AbImageLoader.class, "磁盘中图片已经过期");
+						LogUtil.i(AbImageLoader.class, "磁盘中图片已经过期");
 					}
 				}
 				
 				AbCacheResponse response = AbCacheUtil.getCacheResponse(url);
 				if(response!=null){
-					bitmap =  AbImageUtil.getBitmap(response.data, desiredWidth, desiredHeight);
+					bitmap =  ImageUtil.getBitmap(response.data, desiredWidth, desiredHeight);
 					if(bitmap!=null){
 						memCache.putBitmap(cacheKey, bitmap);
-						AbLogUtil.i(AbImageLoader.class, "图片缓存成功");
+						LogUtil.i(AbImageLoader.class, "图片缓存成功");
 						diskCache.put(cacheKey, AbCacheHeaderParser.parseCacheHeaders(response,cacheMaxAge));
 					}
 				}
 			}else{
 				//磁盘中有
 				byte [] bitmapData = entry.data;
-				bitmap =  AbImageUtil.getBitmap(bitmapData, desiredWidth, desiredHeight);
+				bitmap =  ImageUtil.getBitmap(bitmapData, desiredWidth, desiredHeight);
 				memCache.putBitmap(cacheKey, bitmap);
 			}
 			
@@ -545,7 +545,7 @@ public class AbImageLoader {
 		for(int i=0;i<taskQueueList.size();i++){
 			AbTaskQueue queue = taskQueueList.get(i);
 			int size = queue.getTaskItemListSize();
-			AbLogUtil.i(AbImageLoader.class, "线程队列["+i+"]的任务数："+size);
+			LogUtil.i(AbImageLoader.class, "线程队列["+i+"]的任务数："+size);
 		}
 		
 	}

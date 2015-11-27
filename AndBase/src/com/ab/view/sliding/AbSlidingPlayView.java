@@ -38,8 +38,8 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import com.ab.adapter.AbViewPagerAdapter;
-import com.ab.util.AbFileUtil;
-import com.ab.util.AbViewUtil;
+import com.ab.util.FileUtil;
+import com.ab.util.ViewUtil;
 import com.ab.view.sample.AbInnerViewPager;
 
 // TODO: Auto-generated Javadoc
@@ -205,7 +205,7 @@ public class AbSlidingPlayView extends LinearLayout {
 			} else {
 				imageView.setImageDrawable(hideDrawable);
 			}
-			AbViewUtil.scaleView(imageView);
+			ViewUtil.scaleView(imageView);
 			navLinearLayout.addView(imageView, j);
 		}
 		

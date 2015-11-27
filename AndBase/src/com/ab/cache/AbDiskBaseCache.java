@@ -30,8 +30,8 @@ import java.util.Map;
 import android.os.SystemClock;
 
 import com.ab.global.AbAppConfig;
-import com.ab.util.AbLogUtil;
-import com.ab.util.AbStreamUtil;
+import com.ab.util.LogUtil;
+import com.ab.util.StreamUtil;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -91,7 +91,7 @@ public class AbDiskBaseCache implements AbDiskCache {
     public synchronized void initialize() {
         if (!mRootDirectory.exists()) {
             if (!mRootDirectory.mkdirs()) {
-                AbLogUtil.e(AbDiskBaseCache.class,"缓存目录创建失败，"+mRootDirectory.getAbsolutePath());
+                LogUtil.e(AbDiskBaseCache.class,"缓存目录创建失败，"+mRootDirectory.getAbsolutePath());
             }
             return;
         }
@@ -135,7 +135,7 @@ public class AbDiskBaseCache implements AbDiskCache {
         }
         mEntries.clear();
         mTotalSize = 0;
-        AbLogUtil.d(AbDiskBaseCache.class,"Cache cleared.");
+        LogUtil.d(AbDiskBaseCache.class,"Cache cleared.");
     }
 
     /**
@@ -153,12 +153,12 @@ public class AbDiskBaseCache implements AbDiskCache {
         }
 
         File file = getFileForKey(key);
-        AbLogUtil.d(AbDiskBaseCache.class, "想要从缓存中获取文件"+file.getAbsolutePath());
+        LogUtil.d(AbDiskBaseCache.class, "想要从缓存中获取文件"+file.getAbsolutePath());
         CountingInputStream cis = null;
         try {
             cis = new CountingInputStream(new FileInputStream(file));
             CacheHeader.readHeader(cis); // eat header
-            byte[] data = AbStreamUtil.stream2Bytes(cis, (int) (file.length() - cis.bytesRead));
+            byte[] data = StreamUtil.stream2Bytes(cis, (int) (file.length() - cis.bytesRead));
             return entry.toCacheEntry(data);
         } catch (Exception e) {
         	e.printStackTrace();
@@ -198,7 +198,7 @@ public class AbDiskBaseCache implements AbDiskCache {
         }
         boolean deleted = file.delete();
         if (!deleted) {
-            AbLogUtil.d(AbDiskBaseCache.class,"缓存文件删除失败"+file.getAbsolutePath());
+            LogUtil.d(AbDiskBaseCache.class,"缓存文件删除失败"+file.getAbsolutePath());
         }
     }
 
@@ -212,7 +212,7 @@ public class AbDiskBaseCache implements AbDiskCache {
         boolean deleted = getFileForKey(key).delete();
         removeEntry(key);
         if (!deleted) {
-            AbLogUtil.d(AbDiskBaseCache.class,"缓存文件删除失败");
+            LogUtil.d(AbDiskBaseCache.class,"缓存文件删除失败");
         }
     }
 
@@ -262,7 +262,7 @@ public class AbDiskBaseCache implements AbDiskCache {
             if (deleted) {
                 mTotalSize -= e.size;
             } else {
-               AbLogUtil.d(AbDiskBaseCache.class,"Could not delete cache entry for key=%s, filename=%s",
+               LogUtil.d(AbDiskBaseCache.class,"Could not delete cache entry for key=%s, filename=%s",
                        e.key, getFileNameForKey(e.key));
             }
             iterator.remove();
@@ -274,8 +274,8 @@ public class AbDiskBaseCache implements AbDiskCache {
             }
         }
 
-        if (AbLogUtil.D) {
-        	AbLogUtil.d(AbDiskBaseCache.class,"pruned %d files, %d bytes, %d ms",
+        if (LogUtil.D) {
+        	LogUtil.d(AbDiskBaseCache.class,"pruned %d files, %d bytes, %d ms",
                     prunedFiles, (mTotalSize - before), SystemClock.elapsedRealtime() - startTime);
         }
     }
@@ -360,19 +360,19 @@ public class AbDiskBaseCache implements AbDiskCache {
          */
         public static CacheHeader readHeader(InputStream is) throws IOException {
             CacheHeader entry = new CacheHeader();
-            int magic = AbStreamUtil.readInt(is);
+            int magic = StreamUtil.readInt(is);
             if (magic != CACHE_MAGIC) {
                 // don't bother deleting, it'll get pruned eventually
                 throw new IOException();
             }
-            entry.key = AbStreamUtil.readString(is);
-            entry.etag = AbStreamUtil.readString(is);
+            entry.key = StreamUtil.readString(is);
+            entry.etag = StreamUtil.readString(is);
             if (entry.etag.equals("")) {
                 entry.etag = null;
             }
-            entry.serverTimeMillis = AbStreamUtil.readLong(is);
-            entry.expiredTimeMillis = AbStreamUtil.readLong(is);
-            entry.responseHeaders = AbStreamUtil.readStringStringMap(is);
+            entry.serverTimeMillis = StreamUtil.readLong(is);
+            entry.expiredTimeMillis = StreamUtil.readLong(is);
+            entry.responseHeaders = StreamUtil.readStringStringMap(is);
             return entry;
         }
 
@@ -401,16 +401,16 @@ public class AbDiskBaseCache implements AbDiskCache {
          */
         public boolean writeHeader(OutputStream os) {
             try {
-            	AbStreamUtil.writeInt(os, CACHE_MAGIC);
-            	AbStreamUtil.writeString(os, key);
-            	AbStreamUtil.writeString(os, etag == null ? "" : etag);
-            	AbStreamUtil.writeLong(os, serverTimeMillis);
-            	AbStreamUtil.writeLong(os, expiredTimeMillis);
-            	AbStreamUtil.writeStringStringMap(responseHeaders, os);
+            	StreamUtil.writeInt(os, CACHE_MAGIC);
+            	StreamUtil.writeString(os, key);
+            	StreamUtil.writeString(os, etag == null ? "" : etag);
+            	StreamUtil.writeLong(os, serverTimeMillis);
+            	StreamUtil.writeLong(os, expiredTimeMillis);
+            	StreamUtil.writeStringStringMap(responseHeaders, os);
                 os.flush();
                 return true;
             } catch (IOException e) {
-                AbLogUtil.d(AbDiskBaseCache.class,"%s", e.toString());
+                LogUtil.d(AbDiskBaseCache.class,"%s", e.toString());
                 return false;
             }
         }

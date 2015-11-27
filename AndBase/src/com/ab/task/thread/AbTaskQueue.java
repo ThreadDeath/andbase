@@ -26,7 +26,7 @@ import android.os.Message;
 import com.ab.task.AbTaskItem;
 import com.ab.task.AbTaskListListener;
 import com.ab.task.AbTaskObjectListener;
-import com.ab.util.AbLogUtil;
+import com.ab.util.LogUtil;
 
 // TODO: Auto-generated Javadoc
 
@@ -162,7 +162,7 @@ public class AbTaskQueue extends Thread {
 					    this.wait();
 					}
 				} catch (InterruptedException e) {
-					AbLogUtil.e("AbTaskQueue","收到线程中断请求");
+					LogUtil.e("AbTaskQueue","收到线程中断请求");
 					e.printStackTrace();
 					//被中断的是退出就结束，否则继续
 					if (quit) {

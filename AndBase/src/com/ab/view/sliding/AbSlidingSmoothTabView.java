@@ -36,8 +36,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ab.adapter.AbFragmentPagerAdapter;
-import com.ab.util.AbLogUtil;
-import com.ab.util.AbViewUtil;
+import com.ab.util.LogUtil;
+import com.ab.util.ViewUtil;
 import com.ab.view.sample.AbHorizontalScrollView;
 import com.ab.view.sample.AbHorizontalScrollView.AbOnScrollListener;
 
@@ -157,7 +157,7 @@ public class AbSlidingSmoothTabView extends LinearLayout {
 		
 		//要求必须是FragmentActivity的实例
 		if(!(this.context instanceof FragmentActivity)){
-			AbLogUtil.e(AbSlidingSmoothTabView.class, "构造AbSlidingSmoothTabView的参数context,必须是FragmentActivity的实例。");
+			LogUtil.e(AbSlidingSmoothTabView.class, "构造AbSlidingSmoothTabView的参数context,必须是FragmentActivity的实例。");
 		}
 		
 		FragmentManager mFragmentManager = ((FragmentActivity)this.context).getFragmentManager();
@@ -173,17 +173,17 @@ public class AbSlidingSmoothTabView extends LinearLayout {
 			
 			@Override
 			public void onScrollToRight() {
-				AbLogUtil.d(AbSlidingSmoothTabView.class, "onScrollToRight");
+				LogUtil.d(AbSlidingSmoothTabView.class, "onScrollToRight");
 			}
 			
 			@Override
 			public void onScrollToLeft() {
-				AbLogUtil.d(AbSlidingSmoothTabView.class, "onScrollToLeft");
+				LogUtil.d(AbSlidingSmoothTabView.class, "onScrollToLeft");
 			}
 			
 			@Override
 			public void onScrollStoped() {
-				AbLogUtil.d(AbSlidingSmoothTabView.class, "onScrollStoped");
+				LogUtil.d(AbSlidingSmoothTabView.class, "onScrollStoped");
 			}
 			
 			@Override
@@ -192,7 +192,7 @@ public class AbSlidingSmoothTabView extends LinearLayout {
 				View view = mTabLayout.getChildAt(mSelectedTabIndex);
 				int toX = view.getLeft()-scrollX;
 				
-				AbLogUtil.d(AbSlidingSmoothTabView.class, "滑动X"+startX+"to"+toX);
+				LogUtil.d(AbSlidingSmoothTabView.class, "滑动X"+startX+"to"+toX);
 				imageSlide(mTabImg,startX,toX,0,0);
 				startX = toX;
 			}
@@ -277,36 +277,36 @@ public class AbSlidingSmoothTabView extends LinearLayout {
 		
 		//判断下一个
 		final View tabView = mTabLayout.getChildAt(index);
-		AbViewUtil.measureView(tabView);
+		ViewUtil.measureView(tabView);
 		
 		LayoutParams mParams  = new LayoutParams(tabView.getMeasuredWidth(),tabSlidingHeight);
 		mParams.topMargin = -tabSlidingHeight;
 		mTabImg.setLayoutParams(mParams);
 		
-		AbLogUtil.d(AbSlidingSmoothTabView.class, "old--startX:"+startX);
+		LogUtil.d(AbSlidingSmoothTabView.class, "old--startX:"+startX);
 		//判断当前显示的是否被被屏幕遮挡，如果遮挡就移动（如果是第一个和最后一个移动遮挡的宽度否则移动tab的宽度）
-		AbLogUtil.d(AbSlidingSmoothTabView.class, "view宽度"+index+":"+tabView.getMeasuredWidth());
-		AbLogUtil.d(AbSlidingSmoothTabView.class, "ScrollView宽度:"+mTabScrollView.getWidth());
-		AbLogUtil.d(AbSlidingSmoothTabView.class, "scrollX:"+scrollX);
-		AbLogUtil.d(AbSlidingSmoothTabView.class, "tabView right:"+tabView.getRight());
-		AbLogUtil.d(AbSlidingSmoothTabView.class, "tabView left:"+tabView.getLeft());
+		LogUtil.d(AbSlidingSmoothTabView.class, "view宽度"+index+":"+tabView.getMeasuredWidth());
+		LogUtil.d(AbSlidingSmoothTabView.class, "ScrollView宽度:"+mTabScrollView.getWidth());
+		LogUtil.d(AbSlidingSmoothTabView.class, "scrollX:"+scrollX);
+		LogUtil.d(AbSlidingSmoothTabView.class, "tabView right:"+tabView.getRight());
+		LogUtil.d(AbSlidingSmoothTabView.class, "tabView left:"+tabView.getLeft());
 		
 		if(mSelectedTabIndex<index && tabView.getRight()-scrollX > mTabScrollView.getWidth()){
-			AbLogUtil.d(AbSlidingSmoothTabView.class, "右边被遮挡");
+			LogUtil.d(AbSlidingSmoothTabView.class, "右边被遮挡");
 			int offsetX = 0;
 			//右边被遮挡
 			if(index == mTabLayout.getChildCount()-1){
 				offsetX = tabView.getRight()-mTabScrollView.getWidth()-scrollX;
 				mTabScrollView.smoothScrollBy(offsetX, 0);
 				scrollX = scrollX+offsetX;
-				AbLogUtil.d(AbSlidingSmoothTabView.class, "startX:"+startX+",offsetX:"+offsetX);
+				LogUtil.d(AbSlidingSmoothTabView.class, "startX:"+startX+",offsetX:"+offsetX);
 				imageSlide(mTabImg,startX,mTabScrollView.getWidth()-tabView.getMeasuredWidth(),0,0);
 				startX = mTabScrollView.getWidth()-tabView.getMeasuredWidth();
 			}else{
 				offsetX = tabView.getMeasuredWidth();
 				mTabScrollView.smoothScrollBy(offsetX, 0);
 				scrollX = scrollX+offsetX;
-				AbLogUtil.d(AbSlidingSmoothTabView.class, "startX:"+startX+",offsetX:"+offsetX);
+				LogUtil.d(AbSlidingSmoothTabView.class, "startX:"+startX+",offsetX:"+offsetX);
 				int toX = tabView.getLeft()-scrollX;
 				imageSlide(mTabImg,startX,toX,0,0);
 				startX = toX;
@@ -314,7 +314,7 @@ public class AbSlidingSmoothTabView extends LinearLayout {
 			
 			
 		}else if(mSelectedTabIndex>index && tabView.getLeft() < scrollX){
-			AbLogUtil.d(AbSlidingSmoothTabView.class, "左边被遮挡");
+			LogUtil.d(AbSlidingSmoothTabView.class, "左边被遮挡");
 			//左边被遮挡  offsetX是负值
 			int offsetX = 0;
             if(index == 0){
@@ -327,7 +327,7 @@ public class AbSlidingSmoothTabView extends LinearLayout {
 				offsetX = -tabView.getMeasuredWidth();
 				mTabScrollView.smoothScrollBy(offsetX, 0);
 				scrollX = scrollX+offsetX;
-				AbLogUtil.d(AbSlidingSmoothTabView.class, "startX2:"+startX+",offsetX:"+offsetX);
+				LogUtil.d(AbSlidingSmoothTabView.class, "startX2:"+startX+",offsetX:"+offsetX);
 				int toX = tabView.getLeft()-scrollX;
 				imageSlide(mTabImg,startX,toX,0,0);
 				startX = toX;
@@ -423,7 +423,7 @@ public class AbSlidingSmoothTabView extends LinearLayout {
 		}
 		
 		//重新
-		AbLogUtil.d(AbSlidingSmoothTabView.class, "addItemView finish");
+		LogUtil.d(AbSlidingSmoothTabView.class, "addItemView finish");
 		mFragmentPagerAdapter.notifyDataSetChanged();
 		mViewPager.setCurrentItem(0);
 		computeTabImg(0);

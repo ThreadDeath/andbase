@@ -27,8 +27,8 @@ import android.graphics.RegionIterator;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-import com.ab.util.AbFileUtil;
-import com.ab.util.AbImageUtil;
+import com.ab.util.FileUtil;
+import com.ab.util.ImageUtil;
 
 
 // TODO: Auto-generated Javadoc
@@ -79,8 +79,8 @@ public class HighlightView {
      * Inits the.
      */
     private void init() {
-        mResizeDrawableDiagonal = AbImageUtil.bitmapToDrawable(AbFileUtil.getBitmapFromSrc("image/crop_big.png"));
-        mResizeDrawableDiagonal2 = AbImageUtil.bitmapToDrawable(AbFileUtil.getBitmapFromSrc("image/crop_small.png"));
+        mResizeDrawableDiagonal = ImageUtil.bitmapToDrawable(FileUtil.getBitmapFromSrc("image/crop_big.png"));
+        mResizeDrawableDiagonal2 = ImageUtil.bitmapToDrawable(FileUtil.getBitmapFromSrc("image/crop_small.png"));
     }
 
     /** The m is focused. */

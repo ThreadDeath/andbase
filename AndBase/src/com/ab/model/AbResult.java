@@ -15,7 +15,7 @@
  */
 package com.ab.model;
 
-import com.ab.util.AbJsonUtil;
+import com.ab.util.JsonUtil;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -65,7 +65,7 @@ public class AbResult {
 	 */
 	public AbResult(String json) {
 		super();
-		AbResult result = (AbResult)AbJsonUtil.fromJson(json, this.getClass());
+		AbResult result = (AbResult)JsonUtil.fromJson(json, this.getClass());
 		this.resultCode = result.getResultCode();
 		this.resultMessage = result.getResultMessage();
 	}
@@ -112,7 +112,7 @@ public class AbResult {
 	 * @return
 	 */
 	public String toJson(){
-		return AbJsonUtil.toJson(this);
+		return JsonUtil.toJson(this);
 	}
 	
 

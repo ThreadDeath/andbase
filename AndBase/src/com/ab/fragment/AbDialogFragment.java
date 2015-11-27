@@ -5,8 +5,8 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.view.animation.Animation;
 
-import com.ab.util.AbAnimationUtil;
-import com.ab.util.AbDialogUtil;
+import com.ab.util.AnimationUtil;
+import com.ab.util.DialogUtil;
 /**
  * © 2012 amsoft.cn
  * 名称：AbDialogFragment.java 
@@ -75,7 +75,7 @@ public class AbDialogFragment extends DialogFragment {
 			mAbDialogOnLoadListener.onLoad();
 		}
 		mIndeterminateView = v;
-		AbAnimationUtil.playRotateAnimation(mIndeterminateView, 300, Animation.INFINITE,
+		AnimationUtil.playRotateAnimation(mIndeterminateView, 300, Animation.INFINITE,
 				Animation.RESTART);
 	}
 
@@ -85,7 +85,7 @@ public class AbDialogFragment extends DialogFragment {
 	public void loadFinish(){
 		//停止动画
 		loadStop();
-		AbDialogUtil.removeDialog(this.getActivity());
+		DialogUtil.removeDialog(this.getActivity());
 	}
 	
 	/**

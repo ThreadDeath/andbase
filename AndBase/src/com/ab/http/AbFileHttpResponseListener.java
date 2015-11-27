@@ -19,7 +19,7 @@ import java.io.File;
 
 import android.content.Context;
 
-import com.ab.util.AbFileUtil;
+import com.ab.util.FileUtil;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -134,8 +134,8 @@ public abstract class AbFileHttpResponseListener extends AbHttpResponseListener{
 	 */
 	public void setFile(Context context,String name) {
 		//生成缓存文件
-        if(AbFileUtil.isCanUseSD()){
-	    	File file = new File(AbFileUtil.getFileDownloadDir(context) + name);
+        if(FileUtil.isCanUseSD()){
+	    	File file = new File(FileUtil.getFileDownloadDir(context) + name);
 	    	setFile(file);
         }
 	}

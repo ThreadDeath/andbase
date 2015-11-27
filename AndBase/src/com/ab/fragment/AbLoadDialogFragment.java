@@ -13,7 +13,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ab.util.AbViewUtil;
+import com.ab.util.ViewUtil;
 /**
  * © 2012 amsoft.cn
  * 名称：AbLoadDialogFragment.java 
@@ -65,7 +65,7 @@ public class AbLoadDialogFragment extends AbDialogFragment {
 		parent.setGravity(Gravity.CENTER);
 		parent.setOrientation(LinearLayout.VERTICAL);
 		parent.setPadding(20, 20, 20, 20);
-		parent.setMinimumWidth(AbViewUtil.scaleValue(this.getActivity(), 400));
+		parent.setMinimumWidth(ViewUtil.scaleValue(this.getActivity(), 400));
 		
 		mImageView = new ImageView(this.getActivity());
 		mImageView.setImageResource(mIndeterminateDrawable);

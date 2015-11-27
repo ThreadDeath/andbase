@@ -26,7 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-import com.ab.util.AbLogUtil;
+import com.ab.util.LogUtil;
 
 
 // TODO: Auto-generated Javadoc
@@ -166,7 +166,7 @@ public class AbMultiColumnListView extends ScrollView{
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		super.onLayout(changed, l, t, r, b);
-		//AbLogUtil.d(AbMultiColumnListView.class, "onLayout");
+		//LogUtil.d(AbMultiColumnListView.class, "onLayout");
 		if (changed && !loadOnce) {
 			scrollViewHeight = getHeight();
 			scrollLayout = (LinearLayout)getChildAt(0);
@@ -180,7 +180,7 @@ public class AbMultiColumnListView extends ScrollView{
      * Layout children.
      */
     protected void layoutChildren() {
-    	AbLogUtil.d(AbMultiColumnListView.class, "layoutChildren");
+    	LogUtil.d(AbMultiColumnListView.class, "layoutChildren");
     	firstColumn.removeAllViews();
 		secondColumn.removeAllViews();
 		thirdColumn.removeAllViews();
@@ -203,7 +203,7 @@ public class AbMultiColumnListView extends ScrollView{
      * Adds the children.
      */
     protected void addChildren() {
-    	AbLogUtil.d(AbMultiColumnListView.class, "addChildren");
+    	LogUtil.d(AbMultiColumnListView.class, "addChildren");
     	if(mAdapter != null){
     		int count = mAdapter.getCount();
     		if(count > mItems.size()){
@@ -331,7 +331,7 @@ public class AbMultiColumnListView extends ScrollView{
 		 */
 		@Override
 		public void onChanged() {
-			AbLogUtil.d(AbMultiColumnListView.class, "onChanged");
+			LogUtil.d(AbMultiColumnListView.class, "onChanged");
 			//判断是刷新还是添加
     		int count = mAdapter.getCount();
     		if(count > mItems.size()){

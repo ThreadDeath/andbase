@@ -24,7 +24,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.HttpHostConnectException;
 
-import com.ab.util.AbStrUtil;
+import com.ab.util.StrUtil;
 
 // TODO: Auto-generated Javadoc
 
@@ -72,7 +72,7 @@ public class AbAppException extends Exception {
 			}else if( e instanceof ClientProtocolException) {  
 				msg = AbAppConfig.CLIENT_PROTOCOL_EXCEPTION;
 			}else {
-				if (e == null || AbStrUtil.isEmpty(e.getMessage())) {
+				if (e == null || StrUtil.isEmpty(e.getMessage())) {
 					msg = AbAppConfig.NULL_MESSAGE_EXCEPTION;
 				}else{
 				    msg = e.getMessage();

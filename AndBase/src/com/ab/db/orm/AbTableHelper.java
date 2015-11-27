@@ -29,7 +29,7 @@ import com.ab.db.orm.annotation.Column;
 import com.ab.db.orm.annotation.Id;
 import com.ab.db.orm.annotation.Relations;
 import com.ab.db.orm.annotation.Table;
-import com.ab.util.AbStrUtil;
+import com.ab.util.StrUtil;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -85,7 +85,7 @@ public class AbTableHelper {
 			Table table = (Table) clazz.getAnnotation(Table.class);
 			tableName = table.name();
 		}
-		if(AbStrUtil.isEmpty(tableName)){
+		if(StrUtil.isEmpty(tableName)){
 			Log.d(TAG, "想要映射的实体["+clazz.getName()+"],未注解@Table(name=\"?\"),被跳过");
 			return;
 		}

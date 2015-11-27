@@ -33,8 +33,8 @@ import android.os.Environment;
 import android.os.Handler;
 
 import com.ab.global.AbConstant;
-import com.ab.util.AbDialogUtil;
-import com.ab.util.AbFileUtil;
+import com.ab.util.DialogUtil;
+import com.ab.util.FileUtil;
 
 
 // TODO: Auto-generated Javadoc
@@ -80,7 +80,7 @@ public class CropImage{
 		mImageView.setCropImage(this);
 		mHandler = handler;
 		//初始化图片保存路径
-		FILE_LOCAL = new File(AbFileUtil.getImageDownloadDir(context));
+		FILE_LOCAL = new File(FileUtil.getImageDownloadDir(context));
 		if(!FILE_LOCAL.exists()){
 			FILE_LOCAL.mkdirs();
 		}

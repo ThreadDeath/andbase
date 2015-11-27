@@ -35,8 +35,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ab.adapter.AbFragmentPagerAdapter;
-import com.ab.util.AbAppUtil;
-import com.ab.util.AbLogUtil;
+import com.ab.util.AppUtil;
+import com.ab.util.LogUtil;
 
 // TODO: Auto-generated Javadoc
 
@@ -145,10 +145,10 @@ public class AbSlidingSmoothFixTabView extends LinearLayout {
 		
 		//要求必须是FragmentActivity的实例
 		if(!(this.context instanceof FragmentActivity)){
-			AbLogUtil.e(AbSlidingSmoothFixTabView.class, "构造AbSlidingSmoothTabView的参数context,必须是FragmentActivity的实例。");
+			LogUtil.e(AbSlidingSmoothFixTabView.class, "构造AbSlidingSmoothTabView的参数context,必须是FragmentActivity的实例。");
 		}
 		
-		DisplayMetrics mDisplayMetrics = AbAppUtil.getDisplayMetrics(context);
+		DisplayMetrics mDisplayMetrics = AppUtil.getDisplayMetrics(context);
 		mWidth = mDisplayMetrics.widthPixels;
 		
 		FragmentManager mFragmentManager = ((FragmentActivity)this.context).getFragmentManager();
@@ -240,7 +240,7 @@ public class AbSlidingSmoothFixTabView extends LinearLayout {
         mParams.topMargin = -tabSlidingHeight;
         mTabImg.setLayoutParams(mParams);
         
-        AbLogUtil.d(AbSlidingSmoothFixTabView.class, "old--startX:"+startX);
+        LogUtil.d(AbSlidingSmoothFixTabView.class, "old--startX:"+startX);
         int toX = itemWidth*index;
         imageSlide(mTabImg,startX,toX,0,0);
         startX  = toX;
@@ -329,7 +329,7 @@ public class AbSlidingSmoothFixTabView extends LinearLayout {
 		}
 		
 		//重新
-		AbLogUtil.d(AbSlidingSmoothFixTabView.class, "addItemView finish");
+		LogUtil.d(AbSlidingSmoothFixTabView.class, "addItemView finish");
 		mFragmentPagerAdapter.notifyDataSetChanged();
 		mViewPager.setCurrentItem(0);
 		computeTabImg(0);

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 
-import com.ab.util.AbImageUtil;
+import com.ab.util.ImageUtil;
 
 public class AbPullScaleRefreshView extends ScrollView {
 

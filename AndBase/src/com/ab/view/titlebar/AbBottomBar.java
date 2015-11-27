@@ -28,7 +28,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
-import com.ab.util.AbViewUtil;
+import com.ab.util.ViewUtil;
 
 // TODO: Auto-generated Javadoc
 
@@ -140,7 +140,7 @@ public class AbBottomBar extends LinearLayout {
 	 * @param offsetMode 不填满的模式
 	 */
 	private void showWindow(View parent,View view,boolean offsetMode) {
-		AbViewUtil.measureView(view);
+		ViewUtil.measureView(view);
 		int popWidth = parent.getMeasuredWidth();
 		if(view.getMeasuredWidth()>parent.getMeasuredWidth()){
 			popWidth = view.getMeasuredWidth();

@@ -16,8 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.ab.util.AbAnimationUtil;
-import com.ab.util.AbViewUtil;
+import com.ab.util.AnimationUtil;
+import com.ab.util.ViewUtil;
 /**
  * © 2012 amsoft.cn
  * 名称：AbLoadDialogFragment.java 
@@ -173,7 +173,7 @@ public class AbFragment extends Fragment {
 		if(mLoadView == null){
 			initLoadView();
 		}
-		AbViewUtil.removeSelfFromParent(mLoadView);
+		ViewUtil.removeSelfFromParent(mLoadView);
 		rootView.addView(mLoadView);
 		// 执行加载
 	    load(mLoadImageView);
@@ -194,7 +194,7 @@ public class AbFragment extends Fragment {
 		if(mRefreshView == null){
 			initRefreshView();
 		}
-		AbViewUtil.removeSelfFromParent(mRefreshView);
+		ViewUtil.removeSelfFromParent(mRefreshView);
 		rootView.addView(mRefreshView);
 	}
 	
@@ -209,7 +209,7 @@ public class AbFragment extends Fragment {
 		}
 		
 		rootView.removeAllViews();
-		AbViewUtil.removeSelfFromParent(mContentView);
+		ViewUtil.removeSelfFromParent(mContentView);
 		rootView.addView(mContentView,new LinearLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 	}
@@ -219,7 +219,7 @@ public class AbFragment extends Fragment {
 	 */
 	public void showContentView(View view) {
 		rootView.removeAllViews();
-		AbViewUtil.removeSelfFromParent(mContentView);
+		ViewUtil.removeSelfFromParent(mContentView);
 		mContentView  = view;
 		rootView.addView(mContentView,new LinearLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -259,7 +259,7 @@ public class AbFragment extends Fragment {
 			mAbFragmentOnLoadListener.onLoad();
 		}
 		mIndeterminateView = v;
-		AbAnimationUtil.playRotateAnimation(mIndeterminateView, 300, Animation.INFINITE,
+		AnimationUtil.playRotateAnimation(mIndeterminateView, 300, Animation.INFINITE,
 				Animation.RESTART);
 	}
 	

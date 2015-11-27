@@ -83,9 +83,9 @@ import com.ab.http.entity.mine.content.StringBody;
 import com.ab.http.ssl.EasySSLProtocolSocketFactory;
 import com.ab.image.AbImageLoader;
 import com.ab.task.thread.AbThreadFactory;
-import com.ab.util.AbAppUtil;
-import com.ab.util.AbFileUtil;
-import com.ab.util.AbLogUtil;
+import com.ab.util.AppUtil;
+import com.ab.util.FileUtil;
+import com.ab.util.LogUtil;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -186,12 +186,12 @@ public class AbHttpClient {
 		mExecutorService =  AbThreadFactory.getExecutorService();
 		mHttpContext = new BasicHttpContext();
 		cacheMaxAge = AbAppConfig.DISK_CACHE_EXPIRES_TIME;
-    	PackageInfo info = AbAppUtil.getPackageInfo(context);
+    	PackageInfo info = AppUtil.getPackageInfo(context);
     	File cacheDir = null;
-    	if(!AbFileUtil.isCanUseSD()){
+    	if(!FileUtil.isCanUseSD()){
     		cacheDir = new File(context.getCacheDir(), info.packageName);
 		}else{
-			cacheDir = new File(AbFileUtil.getCacheDownloadDir(context));
+			cacheDir = new File(FileUtil.getCacheDownloadDir(context));
 		}
     	this.httpCache = AbHttpBaseCache.getInstance();
     	this.diskCache = new AbDiskBaseCache(cacheDir);
@@ -210,7 +210,7 @@ public class AbHttpClient {
 		try {
 			  responseListener.onStart();
 			  
-			  if(!AbAppUtil.isNetworkAvailable(mContext)){
+			  if(!AppUtil.isNetworkAvailable(mContext)){
 				    Thread.sleep(200);
 					responseListener.sendFailureMessage(AbHttpStatus.CONNECT_FAILURE_CODE,AbAppConfig.CONNECT_EXCEPTION, new AbAppException(AbAppConfig.CONNECT_EXCEPTION));
 			        return;
@@ -243,7 +243,7 @@ public class AbHttpClient {
 		try {
 			responseListener.onStart();
 			
-			if(!AbAppUtil.isNetworkAvailable(mContext)){
+			if(!AppUtil.isNetworkAvailable(mContext)){
 				Thread.sleep(200);
 				responseListener.onFailure(AbHttpStatus.CONNECT_FAILURE_CODE,AbAppConfig.CONNECT_EXCEPTION, new AbAppException(AbAppConfig.CONNECT_EXCEPTION));
 		        return;
@@ -272,7 +272,7 @@ public class AbHttpClient {
             responseListener.onSuccess(AbHttpStatus.SUCCESS_CODE, resultString);
 		} catch (Exception e) { 
 			e.printStackTrace();
-			AbLogUtil.i(mContext, "[HTTP GET]:"+url+",error："+e.getMessage());
+			LogUtil.i(mContext, "[HTTP GET]:"+url+",error："+e.getMessage());
 			//发送失败消息
 			responseListener.onFailure(AbHttpStatus.UNTREATED_CODE,e.getMessage(),new AbAppException(e));
 		} finally {
@@ -293,7 +293,7 @@ public class AbHttpClient {
     	try {
     		  responseListener.onStart();
 			  
-			  if(!AbAppUtil.isNetworkAvailable(mContext)){
+			  if(!AppUtil.isNetworkAvailable(mContext)){
 				    Thread.sleep(200);
 					responseListener.onFailure(AbHttpStatus.CONNECT_FAILURE_CODE,AbAppConfig.CONNECT_EXCEPTION, new AbAppException(AbAppConfig.CONNECT_EXCEPTION));
 			        return;
@@ -320,14 +320,14 @@ public class AbHttpClient {
 		      if(isContainFile){
 		    	  httpPost.addHeader("connection", "keep-alive");
 			      httpPost.addHeader("Content-Type", "multipart/form-data; boundary=" + params.boundaryString());
-		    	  AbLogUtil.i(mContext, "[HTTP POST]:"+url+",包含文件域!");
+		    	  LogUtil.i(mContext, "[HTTP POST]:"+url+",包含文件域!");
 		      }
 		      //取得HttpResponse
 		      httpClient.execute(httpPost,new RedirectionResponseHandler2(url,responseListener),mHttpContext);  
 			  
 		} catch (Exception e) {
 			e.printStackTrace();
-			AbLogUtil.i(mContext, "[HTTP POST]:"+url+",error:"+e.getMessage());
+			LogUtil.i(mContext, "[HTTP POST]:"+url+",error:"+e.getMessage());
 			//发送失败消息
 			responseListener.onFailure(AbHttpStatus.UNTREATED_CODE,e.getMessage(),new AbAppException(e));
 		}
@@ -339,7 +339,7 @@ public class AbHttpClient {
 		try {
 			responseListener.onStart();
 			
-			if(!AbAppUtil.isNetworkAvailable(mContext)){
+			if(!AppUtil.isNetworkAvailable(mContext)){
 				Thread.sleep(200);
 				responseListener.onFailure(AbHttpStatus.CONNECT_FAILURE_CODE,AbAppConfig.CONNECT_EXCEPTION, new AbAppException(AbAppConfig.CONNECT_EXCEPTION));
 		        return;
@@ -386,7 +386,7 @@ public class AbHttpClient {
             responseListener.onSuccess(AbHttpStatus.SUCCESS_CODE, resultString);
 		} catch (Exception e) { 
 			e.printStackTrace();
-			AbLogUtil.i(mContext, "[HTTP POST]:"+url+",error："+e.getMessage());
+			LogUtil.i(mContext, "[HTTP POST]:"+url+",error："+e.getMessage());
 			//发送失败消息
 			responseListener.onFailure(AbHttpStatus.UNTREATED_CODE,e.getMessage(),new AbAppException(e));
 		} finally {
@@ -449,9 +449,9 @@ public class AbHttpClient {
     				//看磁盘
     				Entry entry = diskCache.get(cacheKey);
     				if(entry == null || entry.isExpired()){
-    					AbLogUtil.i(AbImageLoader.class, "磁盘中没有缓存，或者已经过期");
+    					LogUtil.i(AbImageLoader.class, "磁盘中没有缓存，或者已经过期");
     					
-    					if(!AbAppUtil.isNetworkAvailable(mContext)){
+    					if(!AppUtil.isNetworkAvailable(mContext)){
     					    Thread.sleep(200);
     						responseListener.sendFailureMessage(AbHttpStatus.CONNECT_FAILURE_CODE,AbAppConfig.CONNECT_EXCEPTION, new AbAppException(AbAppConfig.CONNECT_EXCEPTION));
     				        return;
@@ -461,13 +461,13 @@ public class AbHttpClient {
     					
     					if(response!=null){
     						String responseBody = new String(response.data);
-    						AbLogUtil.i(mContext, "[HTTP GET]:"+httpUrl+",result："+responseBody);
+    						LogUtil.i(mContext, "[HTTP GET]:"+httpUrl+",result："+responseBody);
     						Entry entryNew = AbCacheHeaderParser.parseCacheHeaders(response,cacheMaxAge);
     						if(entryNew!=null){
     							diskCache.put(cacheKey,entryNew);
-    							AbLogUtil.i(mContext, "HTTP 缓存成功");
+    							LogUtil.i(mContext, "HTTP 缓存成功");
     						}else{
-    							AbLogUtil.i(AbImageLoader.class, "HTTP 缓存失败，parseCacheHeaders失败");
+    							LogUtil.i(AbImageLoader.class, "HTTP 缓存失败，parseCacheHeaders失败");
     						}
     						((AbStringHttpResponseListener)responseListener).sendSuccessMessage(AbHttpStatus.SUCCESS_CODE, responseBody);
     					}else{
@@ -479,7 +479,7 @@ public class AbHttpClient {
     					byte [] httpData = entry.data;
 	      	            String responseBody = new String(httpData);
 	      	            ((AbStringHttpResponseListener)responseListener).sendSuccessMessage(AbHttpStatus.SUCCESS_CODE, responseBody);
-	      	            AbLogUtil.i(mContext, "[HTTP GET CACHED]:"+httpUrl+",result："+responseBody);
+	      	            LogUtil.i(mContext, "[HTTP GET CACHED]:"+httpUrl+",result："+responseBody);
     				}
     				
     			}catch (Exception e) {
@@ -526,7 +526,7 @@ public class AbHttpClient {
 	private void doGet(String url,AbRequestParams params,AbHttpResponseListener responseListener){
 		  try {
 			  
-			  if(!AbAppUtil.isNetworkAvailable(mContext)){
+			  if(!AppUtil.isNetworkAvailable(mContext)){
 				    Thread.sleep(200);
 					responseListener.sendFailureMessage(AbHttpStatus.CONNECT_FAILURE_CODE,AbAppConfig.CONNECT_EXCEPTION, new AbAppException(AbAppConfig.CONNECT_EXCEPTION));
 			        return;
@@ -564,7 +564,7 @@ public class AbHttpClient {
 	private void doPost(String url,AbRequestParams params,AbHttpResponseListener responseListener){
 		  try {
 			  
-			  if(!AbAppUtil.isNetworkAvailable(mContext)){
+			  if(!AppUtil.isNetworkAvailable(mContext)){
 				    Thread.sleep(200);
 					responseListener.sendFailureMessage(AbHttpStatus.CONNECT_FAILURE_CODE,AbAppConfig.CONNECT_EXCEPTION, new AbAppException(AbAppConfig.CONNECT_EXCEPTION));
 			        return;
@@ -591,14 +591,14 @@ public class AbHttpClient {
 		      if(isContainFile){
 		    	  httpPost.addHeader("connection", "keep-alive");
 			      httpPost.addHeader("Content-Type", "multipart/form-data; boundary=" + params.boundaryString());
-		    	  AbLogUtil.i(mContext, "[HTTP POST]:"+url+",包含文件域!");
+		    	  LogUtil.i(mContext, "[HTTP POST]:"+url+",包含文件域!");
 		      }
 		      //取得HttpResponse
 		      httpClient.execute(httpPost,new RedirectionResponseHandler(url,responseListener),mHttpContext);  
 			  
 		} catch (Exception e) {
 			e.printStackTrace();
-			AbLogUtil.i(mContext, "[HTTP POST]:"+url+",error:"+e.getMessage());
+			LogUtil.i(mContext, "[HTTP POST]:"+url+",error:"+e.getMessage());
 			//发送失败消息
 			responseListener.sendFailureMessage(AbHttpStatus.UNTREATED_CODE,e.getMessage(),new AbAppException(e));
 		}
@@ -617,7 +617,7 @@ public class AbHttpClient {
     		public void run() {
     			HttpURLConnection urlConn = null;
     			try {
-        			if(!AbAppUtil.isNetworkAvailable(mContext)){
+        			if(!AppUtil.isNetworkAvailable(mContext)){
         				Thread.sleep(200);
     					responseListener.sendFailureMessage(AbHttpStatus.CONNECT_FAILURE_CODE,AbAppConfig.CONNECT_EXCEPTION, new AbAppException(AbAppConfig.CONNECT_EXCEPTION));
     			        return;
@@ -640,9 +640,9 @@ public class AbHttpClient {
 						urlConn.connect();
 					}
 					if(body!=null){
-						AbLogUtil.i(mContext, "[HTTP POST]:"+url+",body:"+params.getJson());
+						LogUtil.i(mContext, "[HTTP POST]:"+url+",body:"+params.getJson());
 					}else{
-						AbLogUtil.i(mContext, "[HTTP POST]:"+url+",body:无");
+						LogUtil.i(mContext, "[HTTP POST]:"+url+",body:无");
 					}
 					
 		            if (urlConn.getResponseCode() == HttpStatus.SC_OK){
@@ -650,12 +650,12 @@ public class AbHttpClient {
 		            }else{
 		            	resultString = readString(urlConn.getErrorStream());
 		            }
-		            AbLogUtil.i(mContext, "[HTTP POST]Result:"+resultString);
+		            LogUtil.i(mContext, "[HTTP POST]Result:"+resultString);
 		            urlConn.getInputStream().close();
 		            responseListener.sendSuccessMessage(AbHttpStatus.SUCCESS_CODE, resultString);
     			} catch (Exception e) { 
     				e.printStackTrace();
-					AbLogUtil.i(mContext, "[HTTP POST]:"+url+",error："+e.getMessage());
+					LogUtil.i(mContext, "[HTTP POST]:"+url+",error："+e.getMessage());
 					//发送失败消息
 					responseListener.sendFailureMessage(AbHttpStatus.UNTREATED_CODE,e.getMessage(),new AbAppException(e));
     			} finally {
@@ -681,7 +681,7 @@ public class AbHttpClient {
     		public void run() {
     			HttpURLConnection urlConn = null;
     			try {
-        			if(!AbAppUtil.isNetworkAvailable(mContext)){
+        			if(!AppUtil.isNetworkAvailable(mContext)){
         				Thread.sleep(200);
     					responseListener.sendFailureMessage(AbHttpStatus.CONNECT_FAILURE_CODE,AbAppConfig.CONNECT_EXCEPTION, new AbAppException(AbAppConfig.CONNECT_EXCEPTION));
     			        return;
@@ -713,7 +713,7 @@ public class AbHttpClient {
 		            responseListener.sendSuccessMessage(AbHttpStatus.SUCCESS_CODE, resultString);
     			} catch (Exception e) { 
     				e.printStackTrace();
-					AbLogUtil.i(mContext, "[HTTP POST]:"+url+",error："+e.getMessage());
+					LogUtil.i(mContext, "[HTTP POST]:"+url+",error："+e.getMessage());
 					//发送失败消息
 					responseListener.sendFailureMessage(AbHttpStatus.UNTREATED_CODE,e.getMessage(),new AbAppException(e));
     			} finally {
@@ -984,14 +984,14 @@ public class AbHttpClient {
 						if(response.length >= 2){
 							((AbStringHttpResponseListener)responseListener).onSuccess((Integer) response[0],(String)response[1]);
 						}else{
-							AbLogUtil.e(mContext, "SUCCESS_MESSAGE "+AbAppConfig.MISSING_PARAMETERS);
+							LogUtil.e(mContext, "SUCCESS_MESSAGE "+AbAppConfig.MISSING_PARAMETERS);
 						}
 						
 					}else if(responseListener instanceof AbBinaryHttpResponseListener){
 						if(response.length >= 2){ 
 						    ((AbBinaryHttpResponseListener)responseListener).onSuccess((Integer) response[0],(byte[])response[1]);
 						}else{
-							AbLogUtil.e(mContext, "SUCCESS_MESSAGE "+AbAppConfig.MISSING_PARAMETERS);
+							LogUtil.e(mContext, "SUCCESS_MESSAGE "+AbAppConfig.MISSING_PARAMETERS);
 						}
 					}else if(responseListener instanceof AbFileHttpResponseListener){
 						
@@ -999,7 +999,7 @@ public class AbHttpClient {
 							AbFileHttpResponseListener mAbFileHttpResponseListener = ((AbFileHttpResponseListener)responseListener);
 							mAbFileHttpResponseListener.onSuccess((Integer) response[0],mAbFileHttpResponseListener.getFile());
 						}else{
-							AbLogUtil.e(mContext, "SUCCESS_MESSAGE "+AbAppConfig.MISSING_PARAMETERS);
+							LogUtil.e(mContext, "SUCCESS_MESSAGE "+AbAppConfig.MISSING_PARAMETERS);
 						}
 						
 					}
@@ -1012,7 +1012,7 @@ public class AbHttpClient {
                 	 AbAppException exception = new AbAppException((Exception) response[2]);
 					 responseListener.onFailure((Integer) response[0], (String) response[1], exception);
                  }else{
-                	 AbLogUtil.e(mContext, "FAILURE_MESSAGE "+AbAppConfig.MISSING_PARAMETERS);
+                	 LogUtil.e(mContext, "FAILURE_MESSAGE "+AbAppConfig.MISSING_PARAMETERS);
                  }
 	             break;
 			case START_MESSAGE:
@@ -1026,7 +1026,7 @@ public class AbHttpClient {
 	             if (response != null && response.length >= 2){
 	            	 responseListener.onProgress((Long) response[0], (Long) response[1]);
 			     }else{
-			    	 AbLogUtil.e(mContext, "PROGRESS_MESSAGE "+AbAppConfig.MISSING_PARAMETERS);
+			    	 LogUtil.e(mContext, "PROGRESS_MESSAGE "+AbAppConfig.MISSING_PARAMETERS);
 			     }
 	             break;
 			case RETRY_MESSAGE:
@@ -1176,18 +1176,18 @@ public class AbHttpClient {
 	                      String charset = EntityUtils.getContentCharSet(entity) == null ? encode : EntityUtils.getContentCharSet(entity);
 	      	              responseBody = new String(EntityUtils.toByteArray(entity), charset);
 	      	              
-	      	              AbLogUtil.i(mContext, "[HTTP Response]:"+request.getURI()+",result："+responseBody);
+	      	              LogUtil.i(mContext, "[HTTP Response]:"+request.getURI()+",result："+responseBody);
 	      	              
 	      	              ((AbStringHttpResponseListener)mResponseListener).sendSuccessMessage(statusCode, responseBody);
 	  				      
 	  				  }else if(mResponseListener instanceof AbBinaryHttpResponseListener){
 	  					  responseBody = "Binary";
-	  					  AbLogUtil.i(mContext, "[HTTP Response]:"+request.getURI()+",result："+responseBody);
+	  					  LogUtil.i(mContext, "[HTTP Response]:"+request.getURI()+",result："+responseBody);
 	  					  readResponseData(entity,((AbBinaryHttpResponseListener)mResponseListener));
 	  				  }else if(mResponseListener instanceof AbFileHttpResponseListener){
 	  					  //获取文件名
-	  					  String fileName = AbFileUtil.getCacheFileNameFromUrl(mUrl, response);
-	  					  AbLogUtil.i(mContext, "[HTTP Response]:"+request.getURI()+",result："+fileName);
+	  					  String fileName = FileUtil.getCacheFileNameFromUrl(mUrl, response);
+	  					  LogUtil.i(mContext, "[HTTP Response]:"+request.getURI()+",result："+fileName);
 	  					  writeResponseData(mContext,entity,fileName,((AbFileHttpResponseListener)mResponseListener));
 	  				  }
 	      		      //资源释放!!!
@@ -1281,18 +1281,18 @@ public class AbHttpClient {
 	                      String charset = EntityUtils.getContentCharSet(entity) == null ? encode : EntityUtils.getContentCharSet(entity);
 	      	              responseBody = new String(EntityUtils.toByteArray(entity), charset);
 	      	              
-	      	              AbLogUtil.i(mContext, "[HTTP Response]:"+request.getURI()+",result："+responseBody);
+	      	              LogUtil.i(mContext, "[HTTP Response]:"+request.getURI()+",result："+responseBody);
 	      	              
 	      	              ((AbStringHttpResponseListener)mResponseListener).onSuccess(statusCode, responseBody);
 	  				      
 	  				  }else if(mResponseListener instanceof AbBinaryHttpResponseListener){
 	  					  responseBody = "Binary";
-	  					  AbLogUtil.i(mContext, "[HTTP Response]:"+request.getURI()+",result："+responseBody);
+	  					  LogUtil.i(mContext, "[HTTP Response]:"+request.getURI()+",result："+responseBody);
 	  					  readResponseData2(entity,((AbBinaryHttpResponseListener)mResponseListener));
 	  				  }else if(mResponseListener instanceof AbFileHttpResponseListener){
 	  					  //获取文件名
-	  					  String fileName = AbFileUtil.getCacheFileNameFromUrl(mUrl, response);
-	  					  AbLogUtil.i(mContext, "[HTTP Response]:"+request.getURI()+",result："+fileName);
+	  					  String fileName = FileUtil.getCacheFileNameFromUrl(mUrl, response);
+	  					  LogUtil.i(mContext, "[HTTP Response]:"+request.getURI()+",result："+fileName);
 	  					  writeResponseData(mContext,entity,fileName,((AbFileHttpResponseListener)mResponseListener));
 	  				  }
 	      		      //资源释放!!!
@@ -1351,24 +1351,24 @@ public class AbHttpClient {
             // 设置恢复策略，在发生异常时候将自动重试DEFAULT_MAX_RETRIES次
             if (executionCount >= DEFAULT_MAX_RETRIES){
                 // 如果超过最大重试次数，那么就不要继续了
-            	AbLogUtil.d(mContext, "超过最大重试次数，不重试");
+            	LogUtil.d(mContext, "超过最大重试次数，不重试");
                 return false;
             }
             if (exception instanceof NoHttpResponseException){
                 // 如果服务器丢掉了连接，那么就重试
-            	AbLogUtil.d(mContext, "服务器丢掉了连接，重试");
+            	LogUtil.d(mContext, "服务器丢掉了连接，重试");
                 return true;
             }
             if (exception instanceof SSLHandshakeException){
                 // SSL握手异常，不重试
-            	AbLogUtil.d(mContext, "ssl 异常 不重试");
+            	LogUtil.d(mContext, "ssl 异常 不重试");
                 return false;
             }
             HttpRequest request = (HttpRequest) context.getAttribute(ExecutionContext.HTTP_REQUEST);
             boolean idempotent = (request instanceof HttpEntityEnclosingRequest);
             if (!idempotent){
             	// 如果请求被认为是幂等的，那么就重试
-            	AbLogUtil.d(mContext, "请求被认为是幂等的，重试");
+            	LogUtil.d(mContext, "请求被认为是幂等的，重试");
                 return true;
             }
             if (exception != null){

@@ -32,8 +32,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
-import com.ab.util.AbStrUtil;
-import com.ab.util.AbViewUtil;
+import com.ab.util.StrUtil;
+import com.ab.util.ViewUtil;
 
 // TODO: Auto-generated Javadoc
 
@@ -162,7 +162,7 @@ public class AbTitleBar extends LinearLayout {
 		
 		titleTextBtn = new Button(context);
 		titleTextBtn.setTextColor(Color.rgb(255, 255, 255));
-		AbViewUtil.setTextSize(titleTextBtn,35);
+		ViewUtil.setTextSize(titleTextBtn,35);
 		titleTextBtn.setPadding(5, 0, 5, 0);
 		titleTextBtn.setGravity(Gravity.CENTER_VERTICAL);
 		titleTextBtn.setBackgroundDrawable(null);
@@ -171,7 +171,7 @@ public class AbTitleBar extends LinearLayout {
 		
 		titleSmallTextBtn = new Button(context);
 		titleSmallTextBtn.setTextColor(Color.rgb(255, 255, 255));
-		AbViewUtil.setTextSize(titleSmallTextBtn,30);
+		ViewUtil.setTextSize(titleSmallTextBtn,30);
 		titleSmallTextBtn.setPadding(6, 0, 5, 0);
 		titleSmallTextBtn.setGravity(Gravity.CENTER_VERTICAL);
 		titleSmallTextBtn.setBackgroundDrawable(null);
@@ -253,7 +253,7 @@ public class AbTitleBar extends LinearLayout {
 	 * @param titleTextSize  文字字号
 	 */
 	public void setTitleTextSize(int titleTextSize) {
-		this.titleTextBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX,AbViewUtil.scaleTextValue(activity, titleTextSize));
+		this.titleTextBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX,ViewUtil.scaleTextValue(activity, titleTextSize));
 	}
 	
 	/**
@@ -261,7 +261,7 @@ public class AbTitleBar extends LinearLayout {
 	 * @param titleSmallTextSize  文字字号
 	 */
 	public void setTitleSmallTextSize(int titleSmallTextSize) {
-		this.titleSmallTextBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX,AbViewUtil.scaleTextValue(activity, titleSmallTextSize));
+		this.titleSmallTextBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX,ViewUtil.scaleTextValue(activity, titleSmallTextSize));
 	}
 	
 	/**
@@ -276,8 +276,8 @@ public class AbTitleBar extends LinearLayout {
 	 * @param gravity2  右边布局对齐方式
 	 */
 	public void setTitleBarGravity(int gravity1,int gravity2) {
-		AbViewUtil.measureView(this.logoView);
-		AbViewUtil.measureView(this.rightLayout);
+		ViewUtil.measureView(this.logoView);
+		ViewUtil.measureView(this.rightLayout);
 		int leftWidth = this.logoView.getMeasuredWidth();
 		int rightWidth = this.rightLayout.getMeasuredWidth();
 		//if(D)Log.d(TAG, "测量布局的宽度："+leftWidth+","+rightWidth);
@@ -402,7 +402,7 @@ public class AbTitleBar extends LinearLayout {
      * @param text  文本
      */
 	public void setTitleSmallText(String text) {
-		if(AbStrUtil.isEmpty(text)){
+		if(StrUtil.isEmpty(text)){
 			LinearLayout.LayoutParams titleSmallTextViewLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 0);
 			titleSmallTextBtn.setLayoutParams(titleSmallTextViewLayoutParams);
 			titleSmallTextBtn.setText("");
@@ -484,7 +484,7 @@ public class AbTitleBar extends LinearLayout {
      */
 	public void addRightView(View rightView) {
 		rightLayout.setVisibility(View.VISIBLE);
-		AbViewUtil.scaleContentView((ViewGroup)rightView);
+		ViewUtil.scaleContentView((ViewGroup)rightView);
 		rightLayout.addView(rightView,layoutParamsFF);
 	}
 	
@@ -495,7 +495,7 @@ public class AbTitleBar extends LinearLayout {
 	public void addRightView(int resId) {
 		rightLayout.setVisibility(View.VISIBLE);
 		ViewGroup view = (ViewGroup)mInflater.inflate(resId, null);
-		AbViewUtil.scaleContentView(view);
+		ViewUtil.scaleContentView(view);
 		rightLayout.addView(view,layoutParamsFF);
 	}
 	
@@ -547,7 +547,7 @@ public class AbTitleBar extends LinearLayout {
 	 * @param offsetMode 不填满的模式
 	 */
 	public void showWindow(View parent,View view,boolean offsetMode) {
-		AbViewUtil.measureView(view);
+		ViewUtil.measureView(view);
 		int popWidth = parent.getMeasuredWidth();
 		int popMargin = (this.getMeasuredHeight()-parent.getMeasuredHeight())/2;
 		if(view.getMeasuredWidth()>parent.getMeasuredWidth()){
@@ -639,7 +639,7 @@ public class AbTitleBar extends LinearLayout {
 	 */
 	public void setTitleBarHeight(int height) {
 		ViewGroup.LayoutParams params = this.getLayoutParams();
-		params.height = AbViewUtil.scaleValue(activity, height);
+		params.height = ViewUtil.scaleValue(activity, height);
 	    this.setLayoutParams(params);
 	}
 }

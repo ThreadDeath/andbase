@@ -26,8 +26,8 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.ab.util.AbGraphicUtil;
-import com.ab.util.AbViewUtil;
+import com.ab.util.GraphicUtil;
+import com.ab.util.ViewUtil;
 
 // TODO: Auto-generated Javadoc
 
@@ -102,12 +102,12 @@ public class AbMonitorView extends View  {
         //获取值的文本的高度
         TextPaint mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setTypeface(Typeface.DEFAULT);
-        AbViewUtil.setTextSize(this.getContext(),mTextPaint, 30);
-        AbViewUtil.setTextSize(this.getContext(), mPaint, 30);
+        ViewUtil.setTextSize(this.getContext(),mTextPaint, 30);
+        ViewUtil.setTextSize(this.getContext(), mPaint, 30);
         FontMetrics fm  = mTextPaint.getFontMetrics();
         //得到行高
         int textHeight = (int)Math.ceil(fm.descent - fm.ascent)+2;
-        int textWidth = (int)AbGraphicUtil.getStringWidth(text,mTextPaint);
+        int textWidth = (int)GraphicUtil.getStringWidth(text,mTextPaint);
         
 		canvas.drawText(text,(this.getWidth()-textWidth)/2, textHeight, mPaint);
 		if (delay > 1000L) {
